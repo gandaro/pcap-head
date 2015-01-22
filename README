@@ -1,0 +1,12 @@
+pcap-head
+=========
+
+pcap-head is a small tool that cuts off a pcap file after a specified
+amount of packets.
+
+Usage
+-----
+
+This is how you cut a .pcap file after 10 packets:
+
+	$ pcap-head 10 < infile > outfile
