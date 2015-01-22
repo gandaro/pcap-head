@@ -22,8 +22,14 @@ uint32_t copy_bytes(FILE *dest, FILE *src, uint32_t n) {
 }
 
 int main(int argc, char *argv[]) {
-	int n = atoi(argv[1]);
+	int n;
 	char buf[16];
+
+	if (argc != 2) {
+		fprintf(stderr, "usage: %s packets\n", argv[0]);
+		return 1;
+	}
+	n = atoi(argv[1]);
 
 	if(copy_bytes(stdout, stdin, 24) < 24)
 		return 1;
@@ -32,7 +38,7 @@ int main(int argc, char *argv[]) {
 		uint32_t packet_length;
 		size_t r = fread(buf, 1, 16, stdin);
 		if (r < 16) {
-			if (feof(stdin))
+			if (feof(stdin) && r == 0)
 				return 0;
 			else
 				return 1;
