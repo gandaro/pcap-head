@@ -23,9 +23,10 @@ uint32_t copy_bytes(FILE *dest, FILE *src, uint32_t n) {
 
 int main(int argc, char *argv[]) {
 	int n = atoi(argv[1]);
-	char buf[512];
+	char buf[16];
 
-	copy_bytes(stdout, stdin, 24);
+	if(copy_bytes(stdout, stdin, 24) < 24)
+		return 1;
 
 	for (int i = 0; i < n; i++) {
 		uint32_t packet_length;
