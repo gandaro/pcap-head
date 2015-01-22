@@ -23,17 +23,22 @@ uint32_t copy_bytes(FILE *dest, FILE *src, uint32_t n) {
 
 int main(int argc, char *argv[]) {
 	int n = atoi(argv[1]);
-	FILE *fp = fopen(argv[2], "r");
 	char buf[512];
 
-	copy_bytes(stdout, fp, 24);
+	copy_bytes(stdout, stdin, 24);
 
 	for (int i = 0; i < n; i++) {
 		uint32_t packet_length;
-		fread(buf, 1, 16, fp);
+		size_t r = fread(buf, 1, 16, stdin);
+		if (r < 16) {
+			if (feof(stdin))
+				return 0;
+			else
+				return 1;
+		}
 		fwrite(buf, 1, 16, stdout);
 		packet_length = *((uint32_t *)(buf + 8));
-		if (copy_bytes(stdout, fp, packet_length) < packet_length)
+		if (copy_bytes(stdout, stdin, packet_length) < packet_length)
 			return 1;
 	}
 }
